@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:state_management/model/product.dart';
 import 'package:state_management/view/products_page.dart';
 
 void main() {
   runApp(const MyApp());
+}
+
+class CartState with ChangeNotifier {
+  List<Product> cartProducts = <Product>[].toList();
+
+  void addToCart(Product product) {
+    cartProducts.add(product);
+    notifyListeners();
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -10,12 +21,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'State Management',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider<CartState>(
+      create: (_) => CartState(),
+      child: MaterialApp(
+        title: 'State Management',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: ProductsPage(title: 'Products'),
       ),
-      home: ProductsPage(title: 'Products'),
     );
   }
 }
