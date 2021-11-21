@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:state_management/model/product.dart';
 import 'package:state_management/view/products_page.dart';
 
+final StateNotifierProvider<CartState, List<Product>> cartStateProvider =
+    StateNotifierProvider<CartState, List<Product>>((_) => CartState());
+
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class CartState with ChangeNotifier {
-  List<Product> cartProducts = <Product>[].toList();
+class CartState extends StateNotifier<List<Product>> {
+  CartState() : super(<Product>[].toList());
 
   void addToCart(Product product) {
-    cartProducts.add(product);
-    notifyListeners();
+    state.add(product);
   }
 }
 
@@ -21,15 +23,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<CartState>(
-      create: (_) => CartState(),
-      child: MaterialApp(
-        title: 'State Management',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: ProductsPage(title: 'Products'),
+    return MaterialApp(
+      title: 'State Management',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: ProductsPage(title: 'Products'),
     );
   }
 }
