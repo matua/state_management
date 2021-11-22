@@ -1,4 +1,4 @@
-import 'package:state_management/model/product.dart';
+import 'package:state_management/data/model/product.dart';
 
 class ProductsList {
   ProductsList(
